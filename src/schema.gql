@@ -3,8 +3,17 @@
 # ------------------------------------------------------
 
 type Todo {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """The unique identifier of a task/to-do."""
+  id: Int!
+
+  """The name of a task/to-do."""
+  title: String!
+
+  """More details on a task/to-do"""
+  description: String
+
+  """The status of a task/to-do"""
+  completed: Boolean!
 }
 
 type Query {
