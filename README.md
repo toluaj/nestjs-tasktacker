@@ -20,7 +20,7 @@ Node.js and npm: Install the latest stable versions of Node.js and npm from the 
 
 Docker: Install Docker from the official website, following the instructions specific to your operating system: https://docs.docker.com/engine/install/
 
-Getting Started
+## Getting Started
 
 To set up and run the project, follow the steps below:
 
