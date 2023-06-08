@@ -12,7 +12,7 @@ export class TodoResolver {
 
   @Mutation(() => Todo)
   createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
-    return this.todoService.createTodo(createTodoInput);
+    return this.todoService.create(createTodoInput);
   }
 
   @Query(() => [Todo], { name: 'getTodos' })

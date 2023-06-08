@@ -7,7 +7,7 @@ import { GetTodosArgs } from './dto/get-todo.input';
 @Injectable()
 export class TodoService {
   constructor(private prisma: PrismaService) {}
-  createTodo(createTodoInput: CreateTodoInput) {
+  create(createTodoInput: CreateTodoInput) {
     if (!createTodoInput.title)
       throw new Error('You must provide a title for your to-do!');
     return this.prisma.todo.create({ data: { ...createTodoInput } });
