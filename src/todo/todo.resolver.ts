@@ -13,7 +13,7 @@ export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
   @Mutation(() => Todo)
-  create(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
+  createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
     return this.todoService.create(createTodoInput);
   }
 
