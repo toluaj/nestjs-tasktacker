@@ -2,15 +2,24 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Todo {
-  @Field(() => Int, { description: 'The unique identifier of a task/to-do.' })
+  @Field(() => Int, {
+    description: 'The unique identifier of a task or to-do item.',
+  })
   id: number;
 
-  @Field({ description: 'The name of a task/to-do.' })
+  @Field({ description: 'The name or title of a task or to-do item.' })
   title: string;
 
-  @Field({ description: 'More details on a task/to-do', nullable: true })
+  @Field({
+    description: 'Additional details or description of a task or to-do item.',
+    nullable: true,
+  })
   description?: string;
 
-  @Field({ description: 'The status of a task/to-do', defaultValue: false })
+  @Field({
+    description:
+      'The status of a task or to-do item (whether it is completed or not).',
+    defaultValue: false,
+  })
   completed: boolean;
 }

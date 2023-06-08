@@ -3,16 +3,16 @@
 # ------------------------------------------------------
 
 type Todo {
-  """The unique identifier of a task/to-do."""
+  """The unique identifier of a task or to-do item."""
   id: Int!
 
-  """The name of a task/to-do."""
+  """The name or title of a task or to-do item."""
   title: String!
 
-  """More details on a task/to-do"""
+  """Additional details or description of a task or to-do item."""
   description: String
 
-  """The status of a task/to-do"""
+  """The status of a task or to-do item (whether it is completed or not)."""
   completed: Boolean!
 }
 
