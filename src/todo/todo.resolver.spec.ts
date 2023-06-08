@@ -35,28 +35,28 @@ describe('TodoResolver', () => {
     expect(resolver).toBeDefined();
   });
 
-  it('should query for a single to-do', async () => {
+  it('findOne should return a single to-do', async () => {
     const todo = await resolver.findOne(1);
     expect(todo).toEqual(mockTodo);
   });
 
-  it('should query all to-dos', () => {
-    const todos = resolver.findAll({ take: 1 });
-    expect(Array.isArray(todos)).toEqual(true);
+  it('findAll should return an array of to-dos', () => {
+    const todos = resolver.findAll();
+    expect(Array.isArray(todos)).toBe(true);
+    expect(todos).toContainEqual(mockTodo);
   });
 
-  it('should create a new to-do with a title and description', async () => {
-    const todo = await resolver.createTodo({ title: 'Mock Todo' });
-    expect(todo.title).toBe(mockTodo.title);
-    expect(todo.description).toBe(mockTodo.description);
-    expect(todo.completed).toBe(false);
+  it('createTodo should create a new to-do with title and description', async () => {
+    const newTodo = { title: 'Mock Todo', description: 'Call Tolu' };
+    const todo = await resolver.createTodo(newTodo);
+    expect(todo).toEqual(mockTodo);
   });
 
-  it('should find a to-do given a search query', async () => {
-    const todoMatches = await resolver.searchTitleDesc({ searchQuery: 'Call' });
-    expect(Array.isArray(todoMatches)).toEqual(true);
+  it('searchTitleDesc should find to-dos matching the search query', async () => {
+    const searchQuery = 'Call';
+    const todoMatches = await resolver.searchTitleDesc({ searchQuery });
+    expect(Array.isArray(todoMatches)).toBe(true);
     expect(todoMatches).toHaveLength(1);
-    expect(todoMatches[0].title).toBe('Mock Todo');
-    expect(todoMatches[0].id).toBe(1);
+    expect(todoMatches[0]).toEqual(mockTodo);
   });
 });
