@@ -1,73 +1,87 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+This README file provides information on setting up and running the project built with NestJS, Prisma, Docker, and GraphQL.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Project Overview
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project utilizes the following technologies:
 
-## Description
+NestJS: A progressive Node.js framework for building efficient and scalable server-side applications.
+Prisma: An ORM (Object-Relational Mapping) tool that simplifies database access and management.
+Docker: A containerization platform used to create isolated environments for running applications.
+GraphQL: A query language and runtime for APIs, providing an efficient and flexible approach to data fetching and manipulation.
+Prerequisites
+Before running the project, ensure that you have the following prerequisites installed:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Node.js and npm: Install the latest stable versions of Node.js and npm from the official website: https://nodejs.org
+Docker: Install Docker from the official website, following the instructions specific to your operating system: https://docs.docker.com/engine/install/
+Getting Started
+To set up and run the project, follow the steps below:
 
-## Installation
+Clone the project repository to your local machine.
+Open a terminal and navigate to the project's root directory.
+Step 1: Install Dependencies
+Run the following command to install the required dependencies, including Prisma:
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Running the app
+## Step 2: Set up Docker
+
+Since this project uses PostgreSQL as the database, we will use Docker to create an instance of a PostgreSQL database. Make sure Docker is installed and set up on your machine by following the instructions provided in the official Docker documentation: https://docs.docker.com/engine/install/
+
+## Step 3: Configure the Database Connection
+
+If a .env file does not exist in the project's root directory, create one. Inside the .env file, add the following property:
+
+DATABASE_URL="postgresql://dbuser:dbpassword@localhost:5432/dbname?schema=public"
+Replace the credentials, 'dbuser', 'dbpassword', and 'dbname' with the those of your PostgreSQL database. Prisma will use this URL to establish a connection with the database.
+
+## Step 4: Start the NestJS Application
+
+To start the NestJS application in development mode, run the following command:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+By default, the application will run on port 3000. If port 3000 is already occupied by another application, you can change the port in the main.ts file.
+
+## Step 5: Start the PostgreSQL Database
+
+To spin up an instance of the PostgreSQL database using Docker, run the following command:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker compose up
 ```
 
-## Support
+Make sure Docker is installed globally on your machine. If not, refer back to Step 2 for installation instructions.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Step 6: Run Database Migrations
 
-## Stay in touch
+To update the database schema and apply any pending migrations, run the following command:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npx prisma migrate dev --name init
+```
 
-## License
+The --name flag allows you to specify a custom name for the migration. The example above uses the name init since it's the first migration being run, but you can choose any descriptive name that reflects the changes being made in the migration.
 
-Nest is [MIT licensed](LICENSE).
+## Step 7: Visualize the Database Schema
+
+To view a visualization of the database schema and explore the tables and relationships, run the following command:
+
+```bash
+npx prisma studio
+```
+
+This will open Prisma Studio in your default web browser.
+
+## Step 8: Run Tests
+
+To execute the tests for the Todo resolvers, run the following command in the terminal:
+
+```bash
+npm run test
+```
+
+This command will execute five tests for the Todo resolver and one test for the Prisma service. For more detailed information on the resolver tests, navigate to the src/todo/todo.resolver.spec.ts file
