@@ -3,6 +3,8 @@ import { TodoService } from './todo.service';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoInput } from './dto/create-todo.input';
 import { UpdateTodoInput } from './dto/update-todo.input';
+import { SearchTodoInput } from './dto/search-todo.input';
+import { GetTodosArgs } from './dto/get-todo.input';
 
 @Resolver(() => Todo)
 export class TodoResolver {
@@ -10,17 +12,22 @@ export class TodoResolver {
 
   @Mutation(() => Todo)
   createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
-    return this.todoService.create(createTodoInput);
+    return this.todoService.createTodo(createTodoInput);
   }
 
-  @Query(() => [Todo], { name: 'todo' })
-  findAll() {
-    return this.todoService.findAll();
+  @Query(() => [Todo], { name: 'getTodos' })
+  findAll(@Args() getTodosArgs: GetTodosArgs) {
+    return this.todoService.findAll(getTodosArgs);
   }
 
   @Query(() => Todo, { name: 'todo' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.todoService.findOne(id);
+  async findOne(@Args('id', { type: () => Int }) id: number) {
+    return await this.todoService.findOne(id);
+  }
+
+  @Query(() => [Todo], { name: 'searchTitleDesc' })
+  searchTitleDesc(@Args('searchTodoInput') searchTodoInput: SearchTodoInput) {
+    return this.todoService.searchTitleDesc(searchTodoInput.searchQuery);
   }
 
   @Mutation(() => Todo)
