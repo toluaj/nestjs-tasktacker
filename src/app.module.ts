@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { TodoModule } from './todo/todo.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [
@@ -12,5 +13,6 @@ import { TodoModule } from './todo/todo.module';
     }),
     TodoModule,
   ],
+  providers: [PrismaService],
 })
 export class AppModule {}
