@@ -17,8 +17,11 @@ GraphQL: A query language and runtime for APIs, providing an efficient and flexi
 Before running the project, ensure that you have the following prerequisites installed:
 
 Node.js and npm: Install the latest stable versions of Node.js and npm from the official website: https://nodejs.org
+
 Docker: Install Docker from the official website, following the instructions specific to your operating system: https://docs.docker.com/engine/install/
+
 Getting Started
+
 To set up and run the project, follow the steps below:
 
 Clone the project repository to your local machine.
