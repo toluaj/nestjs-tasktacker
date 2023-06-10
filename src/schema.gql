@@ -16,8 +16,21 @@ type Todo {
   completed: Boolean!
 }
 
+type TodoFeed {
+  todos: [Todo!]!
+  count: Int!
+}
+
+type User {
+  """The unique identifier of a user."""
+  id: Int!
+
+  """Username of the user."""
+  username: String!
+}
+
 type Query {
-  getTodos(skip: Int = 0, take: Int = 10): [Todo!]!
+  getTodos(skip: Int = 0, take: Int = 10): [TodoFeed!]!
   todo(id: Int!): Todo!
   searchTitleDesc(searchTodoInput: SearchTodoInput!): [Todo!]!
 }
@@ -27,9 +40,19 @@ input SearchTodoInput {
 }
 
 type Mutation {
+  login(data: LoginUserInput!): String!
   createTodo(createTodoInput: CreateTodoInput!): Todo!
   updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
   removeTodo(id: Int!): Todo!
+  createUser(data: CreateUserInput!): User!
+}
+
+input LoginUserInput {
+  """Username of the user."""
+  username: String!
+
+  """Username of the user."""
+  password: String!
 }
 
 input CreateTodoInput {
@@ -41,4 +64,12 @@ input UpdateTodoInput {
   title: String!
   description: String
   id: Int!
+}
+
+input CreateUserInput {
+  """Username of the user."""
+  username: String!
+
+  """Username of the user."""
+  password: String!
 }

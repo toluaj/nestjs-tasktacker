@@ -12,6 +12,17 @@ model Todo {
   title String
   description String? 
   completed Boolean @default(false)
+  userId Int @map("user_id")
+  user User @relation("UserToTodo", fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@index([userId], name: "idx_user_id")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  todos Todo[] @relation("UserToTodo")
 }
