@@ -8,6 +8,5 @@ export class CreateTodoInput {
   title: string;
 
   @Field({ nullable: true })
-  @IsString()
   description?: string;
 }

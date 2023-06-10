@@ -7,38 +7,86 @@ import {
   SearchTodoInput,
   UpdateTodoInput,
 } from './dto';
+import { BadRequestException, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.gaurd';
+import { UserContext } from '../users/users-decorator';
+import { TodoFeed } from './entities/todofeed.entity';
 
 @Resolver(() => Todo)
 export class TodoResolver {
   constructor(private readonly todoService: TodoService) {}
 
+  @UseGuards(AuthGuard)
   @Mutation(() => Todo)
-  createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
-    return this.todoService.create(createTodoInput);
+  createTodo(
+    @Args('createTodoInput') createTodoInput: CreateTodoInput,
+    @UserContext() context: any,
+  ) {
+    return this.todoService.create(createTodoInput, context);
   }
 
-  @Query(() => [Todo], { name: 'getTodos' })
-  findAll(@Args() paginationArgs?: PaginationArgs) {
-    return this.todoService.findAll(paginationArgs);
+  @UseGuards(AuthGuard)
+  @Query(() => [TodoFeed], { name: 'getTodos' })
+  async findAll(
+    @UserContext() context: any,
+    @Args({ nullable: true }) paginationArgs?: PaginationArgs,
+  ) {
+    if (paginationArgs) {
+      const { take, skip } = paginationArgs;
+
+      if ((take && (take < 1 || take > 50)) || (skip && skip < 0)) {
+        throw new BadRequestException('Invalid pagination arguments');
+      }
+    }
+
+    const todos = await this.todoService.findAll(paginationArgs, context);
+
+    return [
+      {
+        todos,
+        count: todos.length,
+      },
+    ];
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => Todo, { name: 'todo' })
-  async findOne(@Args('id', { type: () => Int }) id: number) {
-    return await this.todoService.findOne(id);
+  async findOne(
+    @Args('id', { type: () => Int }) id: number,
+    @UserContext() context: any,
+  ) {
+    return await this.todoService.findOne(id, context);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => [Todo], { name: 'searchTitleDesc' })
-  searchTitleDesc(@Args('searchTodoInput') searchTodoInput: SearchTodoInput) {
-    return this.todoService.searchTitleDesc(searchTodoInput.searchQuery);
+  async searchTitleDesc(
+    @Args('searchTodoInput') searchTodoInput: SearchTodoInput,
+    @UserContext() context: any,
+  ) {
+    return await this.todoService.searchTitleDesc(
+      searchTodoInput.searchQuery,
+      context,
+    );
   }
 
   @Mutation(() => Todo)
-  updateTodo(@Args('updateTodoInput') updateTodoInput: UpdateTodoInput) {
-    return this.todoService.update(updateTodoInput.id, updateTodoInput);
+  updateTodo(
+    @Args('updateTodoInput') updateTodoInput: UpdateTodoInput,
+    @UserContext() context: any,
+  ) {
+    return this.todoService.update(
+      updateTodoInput.id,
+      updateTodoInput,
+      context,
+    );
   }
 
   @Mutation(() => Todo)
-  removeTodo(@Args('id', { type: () => Int }) id: number) {
-    return this.todoService.remove(id);
+  removeTodo(
+    @Args('id', { type: () => Int }) id: number,
+    @UserContext() context: any,
+  ) {
+    return this.todoService.remove(id, context);
   }
 }
