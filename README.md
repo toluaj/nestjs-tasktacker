@@ -41,10 +41,12 @@ Since this project uses PostgreSQL as the database, we will use Docker to create
 
 ### Step 3: Configure the Database Connection
 
-If a .env file does not exist in the project's root directory, create one. Inside the .env file, add the following property:
+If a .env file does not exist in the project's root directory, create one. Inside the .env file, add the following properties:
 
 DATABASE_URL="postgresql://dbuser:dbpassword@localhost:5432/dbname?schema=public"
 Replace the credentials, 'dbuser', 'dbpassword', and 'dbname' with the those of your PostgreSQL database. Prisma will use this URL to establish a connection with the database.
+
+JWT_SECRET=yoursecretkey
 
 ### Step 4: Start the NestJS Application
 
@@ -55,6 +57,11 @@ $ npm run start:dev
 ```
 
 By default, the application will run on port 3000. If port 3000 is already occupied by another application, you can change the port in the main.ts file.
+Once the application is running, you can access the GraphQL Playground and API documentation by navigating to the following URL in your web browser:
+
+http://localhost:3000/graphql
+
+The GraphQL Playground provides an interactive interface where you can explore and interact with the GraphQL API. It also includes automatic documentation generation, which you can access by clicking the "DOCS" button on the right side of the Playground. The documentation provides detailed information about the available queries, mutations, and types, making it easier to understand and use the API.
 
 ### Step 5: Start the PostgreSQL Database
 
@@ -68,13 +75,11 @@ Make sure Docker is installed globally on your machine. If not, refer back to St
 
 ### Step 6: Run Database Migrations
 
-To update the database schema and apply any pending migrations, run the following command:
+To update the database schema and apply the migrations in the project, run the following command:
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev
 ```
-
-The --name flag allows you to specify a custom name for the migration. The example above uses the name init since it's the first migration being run, but you can choose any descriptive name that reflects the changes being made in the migration.
 
 ### Step 7: Visualize the Database Schema
 
@@ -94,4 +99,12 @@ To execute the tests for the Todo resolvers, run the following command in the te
 npm run test
 ```
 
-This command will execute five tests for the Todo resolver and one test for the Prisma service. For more detailed information on the resolver tests, navigate to the src/todo/todo.resolver.spec.ts file
+This command will execute 15 tests forfor 4 test suites (Auth, Prisma, Todo, and Users).
+
+## Bonus Features
+
+In addition to the core requirements, I have implemented the following bonus features to enhance the functionality of the Todo List API:
+
+1. Pagination: Added API support for pagination of the Todo items. You can retrieve a specific number of Todo items per page and navigate through the results using pagination arguments.
+
+2. Authentication and Authorization: Implemented JWT-based authentication and authorization for API requests. Users are required to authenticate and provide a valid token to access protected routes.
