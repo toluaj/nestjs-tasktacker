@@ -99,7 +99,7 @@ To execute the tests for the Todo resolvers, run the following command in the te
 npm run test
 ```
 
-This command will execute 15 tests forfor 4 test suites (Auth, Prisma, Todo, and Users).
+This command will execute 15 tests forfor 4 test suites (Auth, Prisma, Todo, and Users) using the Jest testing framework/.
 
 ## Bonus Features
 
