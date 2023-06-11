@@ -30,7 +30,7 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('User with this username does not exist.');
     }
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       throw new UnauthorizedException('Invalid password');
     }
